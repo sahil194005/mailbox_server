@@ -3,6 +3,7 @@ require("dotenv").config();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const UserRoute = require("./Route/Users");
+const EmailRoute = require('./Route/Emails');
 const connectDB = require("./DB/connect");
 
 const app = Express();
@@ -10,6 +11,7 @@ app.use(cors());
 
 app.use(bodyParser.json());
 app.use("/users", UserRoute);
+app.use('/email', EmailRoute);
 
 const PORT = process.env.PORT || 3005;
 async function serverStart() {
