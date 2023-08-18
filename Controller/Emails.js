@@ -2,7 +2,7 @@ const EmailSchema = require("../Model/Emails");
 
 const SendEmail = async (req, res) => {
 	try {
-		let finalObj = { sender: req.User.email,isDeleted:false, ...req.body };
+		let finalObj = { sender: req.User.email, isDeleted: false, ...req.body };
 		await EmailSchema.create(finalObj);
 		res.status(201).json({ msg: "mail sent", success: true });
 	} catch (error) {
@@ -11,16 +11,12 @@ const SendEmail = async (req, res) => {
 	}
 };
 
-
-
-
-
 const getEmail = async (req, res) => {
 	try {
 		const userEmail = req.User.email;
-        const data = await EmailSchema.find({ receiver: userEmail });
-        let arr = data.filter((item) => item.isDeleted === false);
-        console.log(data);
+		const data = await EmailSchema.find({ receiver: userEmail });
+		let arr = data.filter((item) => item.isDeleted === false);
+		console.log(data);
 		res.status(201).json({ msg: "got all mails", data: arr, success: true });
 	} catch (error) {
 		console.log(error);
@@ -40,8 +36,7 @@ const getSingleEmail = async (req, res) => {
 };
 
 const DeleteMail = async (req, res) => {
-    try {
-
+	try {
 		await EmailSchema.findOneAndUpdate({ _id: req.params.id }, { isDeleted: true });
 		res.status(201).json({ msg: "mail deleted", success: true });
 	} catch (error) {
@@ -50,4 +45,15 @@ const DeleteMail = async (req, res) => {
 	}
 };
 
-module.exports = { SendEmail, getEmail, getSingleEmail, DeleteMail };
+const getSentMail = async (req, res) => {
+	try {
+		const userEmail = req.User.email;
+		const data = await EmailSchema.find({ sender: userEmail });
+		res.status(201).json({ msg: "got all mails", data: data, success: true });
+	} catch (error) {
+		console.log(error);
+		res.status(400).json({ msg: "cannot get the mails", success: false });
+	}
+};
+
+module.exports = { SendEmail, getEmail, getSingleEmail, DeleteMail,getSentMail };
