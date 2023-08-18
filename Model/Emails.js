@@ -16,6 +16,9 @@ const EmailSchema = new mongoose.Schema({
 	opened: {
 		type: Boolean,
 	},
+	isDeleted: {
+		type: Boolean,
+	},
 });
 
 module.exports = mongoose.model("emails", EmailSchema);
