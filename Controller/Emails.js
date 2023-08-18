@@ -24,5 +24,21 @@ const getEmail = async (req, res) => {
     }
 }
 
+const getSingleEmail = async (req, res) => {
+    try {
+        await EmailSchema.findOneAndUpdate({ _id: req.params.id }, { opened: true });
+        const mail = await EmailSchema.findOne({ _id: req.params.id });
+        res.status(201).json({msg:'got the mail',data:mail,success:true})  
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({msg:"cannot get the mails",success:false})
 
-module.exports = { SendEmail,getEmail };
+    }
+
+
+
+
+}
+
+
+module.exports = { SendEmail,getEmail,getSingleEmail };
